@@ -1,8 +1,14 @@
 // src/components/Hero.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 function Hero() {
   const imageRef = useRef(null);
+  const sectionRef = useRef(null);
+
+  // State para malaman kung nakikita na ba ang section sa screen (Scroll Reveal)
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Default variables para sa 3D interaction tracking
   const [transformStyle, setTransformStyle] = useState(
     "rotateX(0deg) rotateY(0deg) scale(1)",
   );
@@ -10,28 +16,45 @@ function Hero() {
     "0 0 15px rgba(0,255,247,0.3)",
   );
 
-  // Function para sa 3D Tilt at Dynamic Glow effect sa Mouse Move (Desktop)
+  // INTERSECTION OBSERVER: Taga-abang kung na-scroll na ng user ang section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Kapag nakikita sa viewport, gagawing true ang state (In Animation)
+        // Kapag umalis sa screen, gagawing false (Out Animation)
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }, // Itri-trigger kapag kahit 10% ng component ay nakikita na
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, []);
+
+  // Dynamic 3D Interaction Control
   const handleMouseMove = (e) => {
     if (!imageRef.current) return;
-
     const rect = imageRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-
-    // Max tilt angle na 20 degrees gaya ng lumang code mo
-    const rotateX = ((y - centerY) / centerY) * 20;
-    const rotateY = ((x - centerX) / centerX) * 20;
+    const rotateX = ((y - centerY) / centerY) * 15;
+    const rotateY = ((x - centerX) / centerX) * 15;
 
     setTransformStyle(
-      `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`,
+      `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`,
     );
-    setBoxShadowStyle(`${rotateY}px ${-rotateX}px 30px rgba(0,255,247,0.5)`);
+    setBoxShadowStyle(
+      `${rotateY * 1.5}px ${-rotateX * 1.5}px 35px rgba(0,255,247,0.6)`,
+    );
   };
 
-  // Ibalik sa default kapag umalis ang mouse
   const handleMouseLeave = () => {
     setTransformStyle("rotateX(0deg) rotateY(0deg) scale(1)");
     setBoxShadowStyle("0 0 15px rgba(0,255,247,0.3)");
@@ -40,46 +63,42 @@ function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center py-[60px] md:py-0"
+      ref={sectionRef}
+      // PURE TAILWIND TRANSITION MATRIX: Nagbabago ang opacity at pwesto depende sa 'isVisible' state
+      className={`min-h-screen flex items-center justify-center pt-[90px] md:pt-0 pb-12 md:pb-0 select-none transition-all duration-1000 ease-out
+        ${isVisible ? "opacity-100 translate-y-0 filter blur-0" : "opacity-0 translate-y-12 filter blur-[4px]"}`}
     >
-      <div className="flex flex-col md:flex-row items-center justify-between w-[95%] md:w-[80%] gap-10 md:gap-[100px] text-center md:text-left">
-        {/* Hero Image Container */}
+      <div className="flex flex-col md:flex-row items-center justify-between w-[90%] md:w-[80%] max-w-[1200px] gap-12 md:gap-[80px] text-center md:text-left">
+        {/* RETRO GLOWING 3D AVATAR MATRIX */}
         <div
           ref={imageRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] flex justify-center items-center group perspective-[1000px]"
+          // May dagdag na delay sa transition para maunang mag-load ang text bago ang picture
+          className={`relative w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] md:w-[320px] md:h-[320px] flex justify-center items-center group [perspective:1000px] cursor-pointer transition-all duration-1000 delay-300 ease-out
+            ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}
         >
-          {/* Glowing Animated Frame background */}
-          <div className="absolute w-[215px] h-[215px] md:w-[315px] md:h-[315px] rounded-[20px] bg-gradient-to-r from-[#00fff7] via-[#009dff] to-[#00fff7] animate-[spin_6s_linear_infinite] filter blur-[12px] opacity-100 group-hover:blur-[15px] transition-all duration-150 z-0"></div>
-
-          {/* Main Image */}
+          <div className="absolute w-[232px] h-[232px] sm:w-[272px] sm:h-[272px] md:w-[335px] md:h-[335px] rounded-[24px] bg-gradient-to-r from-[#00fff7] via-[#009dff] to-[#ff00c8] animate-[spin_8s_linear_infinite] filter blur-[15px] opacity-80 group-hover:opacity-100 group-hover:blur-[20px] transition-all duration-300 z-0"></div>
           <img
-            src="images/harvey.jpg"
+            src="/images/harvey.jpg"
             alt="James Harvey Austria"
             style={{ transform: transformStyle, boxShadow: boxShadowStyle }}
-            className="w-[200px] h-[200px] md:w-[300px] md:h-[300px] object-cover rounded-[20px] relative z-10 border-3 border-[#00fff7]/40 group-hover:border-[#00fff7] transition-all duration-150 ease-out preserve-3d"
+            className="w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] md:w-[320px] md:h-[320px] object-cover rounded-[24px] relative z-10 border-4 border-[#00fff7]/40 group-hover:border-[#00fff7] transition-all duration-200 ease-out [transform-style:preserve-3d]"
           />
         </div>
 
-        {/* Hero Text with Glitch Effect */}
-        <div className="select-none text-white md:max-w-[600px]">
-          {/* Gagamit tayo ng normal na tailwind typography pero naka-inject yung glitch values */}
-          <h1
-            data-text="James Harvey Austria"
-            className="text-[24px] sm:text-[32px] md:text-[60px] font-bold text-[#00fff7] drop-shadow-[0_0_10px_#00fff7] animate-[flicker_2s_infinite] relative
-                       before:content-[attr(data-text)] before:absolute before:left-0 before:top-0 before:w-full before:overflow-hidden before:text-[#00fff7] before:text-shadow-[2px_0_#ff00c8] before:clip-rect-top before:animate-[glitchTop_2s_infinite_linear_alternate-reverse]
-                       after:content-[attr(data-text)] after:absolute after:left-0 after:top-0 after:w-full after:overflow-hidden after:text-[#00fff7] after:text-shadow-[-2px_0_#00fff7] after:clip-rect-bottom after:animate-[glitchBottom_2s_infinite_linear_alternate-reverse]"
-          >
+        {/* HERO GRAPHICS DETAILS */}
+        <div className="text-white max-w-[650px] flex-1">
+          <h1 className="font-['Orbitron'] text-[32px] sm:text-[44px] md:text-[56px] font-bold text-[#00fff7] tracking-wide leading-tight drop-shadow-[0_0_15px_rgba(0,255,247,0.4)] transition-all duration-300 hover:text-white">
             James Harvey Austria
           </h1>
 
-          <p
-            data-text="Computer Science Batch 2026"
-            className="text-[12px] sm:text-[16px] md:text-[20px] text-gray-300 mt-[10px] drop-shadow-[0_0_10px_#00fff7] animate-[flicker_2s_infinite] relative"
-          >
-            Computer Science Batch 2026
-          </p>
+          <div className="mt-5 inline-block bg-[rgba(0,157,255,0.12)] border border-[#009dff]/40 px-5 py-2.5 rounded-[12px] shadow-[inset_0_0_12px_rgba(0,157,255,0.2)]">
+            <p className="font-['Orbitron'] text-[12px] sm:text-[14px] md:text-[16px] text-gray-200 font-bold tracking-widest uppercase">
+              Computer Science{" "}
+              <span className="text-[#00fff7]">Batch 2026</span>
+            </p>
+          </div>
         </div>
       </div>
     </section>

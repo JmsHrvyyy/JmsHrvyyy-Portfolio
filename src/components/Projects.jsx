@@ -237,7 +237,7 @@ function Projects() {
                         {/* Description script box area with conditional text clamping line caps */}
                         {/* Ginamitan natin ng line-clamp-3 para pantay-pantay ang taas ng mga cards */}
                         <div className="h-[68px] overflow-hidden mb-4">
-                          <p className="font-['Orbitron'] text-[11px] text-gray-400 leading-[1.6] text-justify line-clamp-3 group-hover:line-clamp-none group-hover:overflow-y-auto h-full pr-1 custom-scrollbar">
+                          <p className="font-['Orbitron'] text-[11px] text-gray-400 leading-[1.6] text-justify line-clamp-3 group-hover:line-clamp-none group-hover:overflow-y-auto h-full pr-1 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
                             {project.description}
                           </p>
                         </div>

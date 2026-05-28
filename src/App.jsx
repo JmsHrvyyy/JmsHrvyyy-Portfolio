@@ -8,8 +8,7 @@ import MarioRun from "./components/MarioRun";
 
 function App() {
   return (
-    // Main Background at layout container gamit ang Tailwind classes
-    <div className="bg-[#010b14] min-h-screen text-white font-['Press_Start_2P'] antialiased pt-[60px] overflow-x-hidden selection:bg-[#00fff7] selection:text-[#010b14]">
+    <div className="bg-[#010b14] min-h-screen text-white font-sans w-full max-w-[100vw] overflow-x:hidden relative">
       <Navbar />
       <main>
         <Hero />

@@ -133,8 +133,8 @@ function Projects() {
     <section
       id="projects"
       ref={sectionRef}
-      className={`min-h-screen flex items-center justify-center py-[80px] px-5 select-none transition-all duration-1000 ease-out transform overflow-hidden
-        ${isVisible ? "opacity-100 translate-y-0 filter blur-0 scale-100" : "opacity-0 translate-y-20 filter blur-[8px] scale-95"}`}
+      className={`w-full min-h-screen flex items-center justify-center py-[80px] px-5 select-none transition-all duration-1000 ease-out transform overflow-hidden
+      ${isVisible ? "opacity-100 translate-y-0 filter blur-0 scale-100" : "opacity-0 translate-y-20 filter blur-[8px] scale-95"}`}
     >
       <div className="w-full max-w-[1100px] mx-auto text-center">
         {/* Header Titles Layout Section */}

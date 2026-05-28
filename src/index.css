@@ -1,1 +1,13 @@
 @import "tailwindcss";/* src/index.css */
+
+/* I-paste ito sa pinakailalim ng iyong src/index.css file */
+@keyframes fadeInCard {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

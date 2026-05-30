@@ -1,0 +1,52 @@
+@import "tailwindcss"; /* src/index.css */
+
+/* I-paste ito sa pinakailalim ng iyong src/index.css file */
+@keyframes fadeInCard {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@layer base {
+  html,
+  body {
+    /* Tinatanggal ang scrollbar indicator sa buong window ng Chrome, Safari, at Edge */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    /* Tinatanggal ang scrollbar indicator sa Firefox */
+    scrollbar-width: none;
+
+    /* Sinisigurong walang tagilid na pag-uga o horizontal scrolling */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background-color: #010b14;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important; /* Binabara ang horizontal stretching overflow */
+  background-color: #010b14;
+  scroll-behavior: smooth;
+}
+
+/* Tinatanggal ang scrollbar graphics sa pinakagilid ng window para sa lahat ng modernong browser types */
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+html {
+  scrollbar-width: none !important; /* Para sa Firefox support layer */
+  -ms-overflow-style: none !important; /* Para sa lumang IE at Edge interfaces */
+}

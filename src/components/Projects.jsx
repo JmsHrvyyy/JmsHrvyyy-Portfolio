@@ -33,7 +33,7 @@ function Projects() {
       githubLink: "#",
     },
     {
-      title: "Cashier System (in School Management System)",
+      title: "Cashier Hub & Employee Payroll System (in School Management System)",
       description:
         "I developed the comprehensive Cashier and Payroll Management module for a web-based business application, enabling efficient tracking of personnel credentials, work attendance, and real-time compensation processing. The module features an interactive dashboard with automatic net pay calculation, automated deduction and overtime tracking, and a seamless digital report generation and individual payslip system.",
       tags: ["REACT", "TAILWIND CSS", "PHP", "MYSQL"],

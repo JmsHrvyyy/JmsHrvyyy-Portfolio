@@ -72,7 +72,7 @@ function Contact() {
         {/* SECTION HEADER BLOCK */}
         <div className="text-center mb-10 md:mb-14">
           <h2 className="font-['Orbitron'] text-[26px] md:text-[38px] font-bold text-white mb-3 tracking-widest drop-shadow-[0_0_12px_#00fff7]">
-            Connect Matrix
+            Contact
           </h2>
           <p className="font-['Orbitron'] text-[11px] md:text-[13px] text-gray-400 max-w-[500px] mx-auto tracking-wider uppercase">
             Initialize handshake protocols or query my active distribution
@@ -183,8 +183,8 @@ function Contact() {
 
               <div className="pt-2">
                 <a
-                  href="/resume.pdf"
-                  download="James_Harvey_Austria_Resume.pdf"
+                  href="/James_Harvey_Austria-Resume.pdf"
+                  download="James_Harvey_Austria-Resume.pdf"
                   className="w-full block text-center font-['Orbitron'] text-[11px] font-bold text-[#101f30] bg-[#00fff7] border border-[#00fff7] py-3 rounded-[10px] tracking-widest transition-all duration-300 shadow-[0_0_10px_rgba(0,255,247,0.2)] hover:bg-transparent hover:text-[#00fff7] hover:shadow-[0_0_15px_#00fff7] uppercase cursor-pointer"
                 >
                   &#128190; Download My Resume
@@ -216,13 +216,13 @@ function Contact() {
 
               <div className="flex flex-col space-y-1.5">
                 <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
-                  [02] Electronic Mail Node
+                  [02] Email Address
                 </label>
                 <input
                   type="email"
                   name="reply_to" // Gagamitin para kapag nag-reply ka sa email, dideretso sa recruiter
                   required
-                  placeholder="YOUR.EMAIL@COMMUNICATION.NET..."
+                  placeholder="YOUR.EMAIL@GMAIL.COM..."
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -233,13 +233,13 @@ function Contact() {
 
               <div className="flex flex-col space-y-1.5">
                 <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
-                  [03] Packet Message Payload
+                  [03] MESSAGE
                 </label>
                 <textarea
                   name="message" // Parameter para sa nilalaman ng mensahe
                   required
                   rows="4"
-                  placeholder="WRITE TRANSMISSION LOGS HERE..."
+                  placeholder="WRITE YOUR MESSAGE HERE..."
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
@@ -253,7 +253,7 @@ function Contact() {
                   type="submit"
                   className="w-full font-['Orbitron'] text-[11px] font-bold text-[#101f30] bg-[#00fff7] border border-[#00fff7] py-3 rounded-[10px] tracking-widest transition-all duration-300 shadow-[0_0_12px_rgba(0,255,247,0.2)] hover:bg-transparent hover:text-[#00fff7] hover:shadow-[0_0_20px_#00fff7] uppercase cursor-pointer"
                 >
-                  Execute Transmission Protocol
+                  SEND MESSAGE
                 </button>
               </div>
             </form>

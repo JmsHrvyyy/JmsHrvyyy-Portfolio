@@ -1,20 +1,23 @@
 // src/components/ui/DotField.jsx
+// =========================================================================
+// DOTFIELD CORE ENGINE - HIGH-PERFORMANCE MAGNETIC EVASION EDITION
+// =========================================================================
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 export default function DotField({
-  dotRadius = 4,
+  dotRadius = 1.2,
   dotSpacing = 30,
-  cursorRadius = 100,
-  cursorForce = 1,
-  bulgeOnly = false,
-  bulgeStrength = 150,
-  glowRadius = 160,
+  cursorRadius = 200,
+  cursorForce = -0.6, // Naka-negative para sa push-away force/evasion logic
+  bulgeOnly = false, // Naka-false para sa XY responsive plane displacement
+  bulgeStrength = 0,
+  glowRadius = 120,
   sparkle = false,
-  waveAmplitude = 0,
-  gradientFrom = "rgba(168, 85, 247, 0.35)",
-  gradientTo = "rgba(180, 151, 207, 0.25)",
-  glowColor = "#120F17",
+  waveAmplitude = 2.5,
+  gradientFrom = "rgba(0, 255, 247, 0.15)",
+  gradientTo = "rgba(0, 85, 255, 0.04)",
+  glowColor = "#010b14",
 }) {
   const containerRef = useRef(null);
 
@@ -175,12 +178,17 @@ export default function DotField({
     window.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseleave", handleMouseLeave);
 
-    let clock = new THREE.Clock();
+    // =========================================================================
+    // NATIVE PERFORMANCE CLOCK DEPLOYMENT (ZERO DEPRECATION WARNINGS)
+    // =========================================================================
+    let startTime = performance.now();
     let animationFrameId;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+
+      // Kinakalkula ang lumipas na segundo gamit ang native performance monitor ng browser
+      const elapsedTime = (performance.now() - startTime) / 1000;
       material.uniforms.u_time.value = elapsedTime;
 
       mouse.x += (targetMouse.x - mouse.x) * 0.1;

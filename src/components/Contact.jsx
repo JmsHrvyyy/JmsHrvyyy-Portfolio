@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import emailjs from "@emailjs/browser"; // Ini-import ang EmailJS package
+import emailjs from "@emailjs/browser";
 
 function Contact() {
   const sectionRef = useRef(null);
-  const formRef = useRef(null); // Ref para sa mismong HTML form element
+  const formRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
-  // State para sa tracking ng text inputs (para malinis ang form pagkatapos mag-send)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  // Intersection Observer para sa page scroll reveal animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
@@ -26,16 +25,12 @@ function Contact() {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Pinipigilan ang pag-refresh ng page
+    e.preventDefault();
 
-    // Hinihila ang mga variables nang ligtas mula sa .env environment arena
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // REMOVED FOR SECURITY: Tinanggal na natin ang console.log() dito para hindi na mag-print ang keys sa browser!
-
-    // System validation guard lock
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
       alert(
         "SYSTEM ERROR: Environment variables are missing. Handshake aborted.",
@@ -45,15 +40,11 @@ function Contact() {
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY).then(
       (result) => {
-        // Ligtas i-log ang text confirmation tulad ng "OK" o "SUCCESS" dahil walang sensitibong keys dito
         console.log("Transmission Successful:", result.text);
-        alert(
-          "SYSTEM DATA: Message successfully routed to your personal Gmail inbox!",
-        );
-        setFormData({ name: "", email: "", message: "" }); // I-reset ang data fields
+        setIsSent(true);
+        setFormData({ name: "", email: "", message: "" });
       },
       (error) => {
-        // I-log ang error status code lang para sa safe monitoring
         console.error("Transmission Failed Code:", error.status);
         alert(`SYSTEM ERROR: Handshake protocol failed. Protocol breakdown.`);
       },
@@ -64,7 +55,6 @@ function Contact() {
     <section
       id="contact"
       ref={sectionRef}
-      /* Mobile-First: py-[60px] sa phone, aangat sa py-[100px] sa malalaking monitor */
       className={`w-full min-h-screen flex items-center justify-center py-[60px] md:py-[100px] px-5 select-none transition-all duration-1000 ease-out transform overflow-hidden relative
         ${isVisible ? "opacity-100 translate-y-0 filter blur-0 scale-100" : "opacity-0 translate-y-20 filter blur-[8px] scale-95"}`}
     >
@@ -80,9 +70,9 @@ function Contact() {
           </p>
         </div>
 
-        {/* MAIN LAYOUT STACK (Mobile-First: flex-col sa phone, flex-row kapag desktop screens) */}
+        {/* MAIN LAYOUT STACK */}
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
-          {/* LEFT COLUMN: Direct Contact Nodes & Resume Download Card */}
+          {/* LEFT COLUMN: Direct Contact Nodes */}
           <div className="flex-1 bg-[rgba(1,11,20,0.65)] border border-[#00fff7]/15 rounded-[20px] p-5 md:p-6 backdrop-blur-[8px] flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-6 border-b border-white/5 pb-3">
@@ -193,70 +183,115 @@ function Contact() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Interactive Form Input Fields Box */}
-          <div className="flex-[1.2] bg-[rgba(1,11,20,0.75)] border border-[#00fff7]/15 rounded-[20px] p-5 md:p-8 backdrop-blur-[8px] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#00fff7]/30">
-            {/* Ikbinalot natin sa formRef ang buong tag at nilagyan ng HTML names para basahin ng EmailJS */}
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex flex-col space-y-1.5">
-                <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
-                  [01] Identifier Name
-                </label>
-                <input
-                  type="text"
-                  name="from_name" // Ito ang gagamiting parameter sa EmailJS Template
-                  required
-                  placeholder="ENTER YOUR NAME..."
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full bg-[rgba(1,11,20,0.5)] border border-white/10 rounded-[10px] px-4 py-3 font-['Orbitron'] text-[11px] text-white tracking-wide placeholder-gray-600 focus:outline-none focus:border-[#00fff7] focus:shadow-[0_0_12px_rgba(0,255,247,0.15)] transition-all duration-300 uppercase"
-                />
-              </div>
+          {/* RIGHT COLUMN: Interactive Form Field */}
+          <div className="flex-[1.2] bg-[rgba(1,11,20,0.75)] border border-[#00fff7]/15 rounded-[20px] p-5 md:p-8 backdrop-blur-[8px] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#00fff7]/30 flex flex-col justify-center min-h-[420px]">
+            {!isSent ? (
+              // FORM INTERFACE COMPONENT BLOCK
+              <div className="w-full h-full space-y-5 animate-fadeIn">
+                {/* NEW FORM HEADER BLOCK */}
+                <div className="border-b border-white/5 pb-2 mb-2">
+                  <h4 className="font-['Orbitron'] text-[13px] font-bold text-white tracking-widest uppercase">
+                    [// Establish_Connection]
+                  </h4>
+                  <p className="font-['Orbitron'] text-[9px] text-gray-500 tracking-wider uppercase mt-0.5">
+                    Fill out the form blocks below to push transmission data.
+                  </p>
+                </div>
 
-              <div className="flex flex-col space-y-1.5">
-                <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
-                  [02] Email Address
-                </label>
-                <input
-                  type="email"
-                  name="reply_to" // Gagamitin para kapag nag-reply ka sa email, dideretso sa recruiter
-                  required
-                  placeholder="YOUR.EMAIL@GMAIL.COM..."
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="w-full bg-[rgba(1,11,20,0.5)] border border-white/10 rounded-[10px] px-4 py-3 font-['Orbitron'] text-[11px] text-white tracking-wide placeholder-gray-600 focus:outline-none focus:border-[#00fff7] focus:shadow-[0_0_12px_rgba(0,255,247,0.15)] transition-all duration-300"
-                />
-              </div>
-
-              <div className="flex flex-col space-y-1.5">
-                <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
-                  [03] MESSAGE
-                </label>
-                <textarea
-                  name="message" // Parameter para sa nilalaman ng mensahe
-                  required
-                  rows="4"
-                  placeholder="WRITE YOUR MESSAGE HERE..."
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  className="w-full bg-[rgba(1,11,20,0.5)] border border-white/10 rounded-[10px] px-4 py-3 font-['Orbitron'] text-[11px] text-white tracking-wide placeholder-gray-600 focus:outline-none focus:border-[#00fff7] focus:shadow-[0_0_12px_rgba(0,255,247,0.15)] transition-all duration-300 resize-none [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
-                />
-              </div>
-
-              <div className="pt-1">
-                <button
-                  type="submit"
-                  className="w-full font-['Orbitron'] text-[11px] font-bold text-[#101f30] bg-[#00fff7] border border-[#00fff7] py-3 rounded-[10px] tracking-widest transition-all duration-300 shadow-[0_0_12px_rgba(0,255,247,0.2)] hover:bg-transparent hover:text-[#00fff7] hover:shadow-[0_0_20px_#00fff7] uppercase cursor-pointer"
+                <form
+                  ref={formRef}
+                  onSubmit={handleSubmit}
+                  className="space-y-4"
                 >
-                  SEND MESSAGE
-                </button>
+                  <div className="flex flex-col space-y-1.5">
+                    <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
+                      [01] Identifier Name
+                    </label>
+                    <input
+                      type="text"
+                      name="from_name"
+                      required
+                      placeholder="ENTER YOUR NAME..."
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      className="w-full bg-[rgba(1,11,20,0.5)] border border-white/10 rounded-[10px] px-4 py-3 font-['Orbitron'] text-[11px] text-white tracking-wide placeholder-gray-600 focus:outline-none focus:border-[#00fff7] focus:shadow-[0_0_12px_rgba(0,255,247,0.15)] transition-all duration-300 uppercase"
+                    />
+                  </div>
+
+                  <div className="flex flex-col space-y-1.5">
+                    <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
+                      [02] Email Address
+                    </label>
+                    <input
+                      type="email"
+                      name="reply_to"
+                      required
+                      placeholder="YOUR.EMAIL@GMAIL.COM..."
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      className="w-full bg-[rgba(1,11,20,0.5)] border border-white/10 rounded-[10px] px-4 py-3 font-['Orbitron'] text-[11px] text-white tracking-wide placeholder-gray-600 focus:outline-none focus:border-[#00fff7] focus:shadow-[0_0_12px_rgba(0,255,247,0.15)] transition-all duration-300"
+                    />
+                  </div>
+
+                  <div className="flex flex-col space-y-1.5">
+                    <label className="font-['Orbitron'] text-[10px] font-bold text-[#00fff7] tracking-widest uppercase">
+                      [03] MESSAGE
+                    </label>
+                    <textarea
+                      name="message"
+                      required
+                      rows="4"
+                      placeholder="WRITE YOUR MESSAGE HERE..."
+                      value={formData.message}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
+                      className="w-full bg-[rgba(1,11,20,0.5)] border border-white/10 rounded-[10px] px-4 py-3 font-['Orbitron'] text-[11px] text-white tracking-wide placeholder-gray-600 focus:outline-none focus:border-[#00fff7] focus:shadow-[0_0_12px_rgba(0,255,247,0.15)] transition-all duration-300 resize-none [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+                    />
+                  </div>
+
+                  <div className="pt-1">
+                    <button
+                      type="submit"
+                      className="w-full font-['Orbitron'] text-[11px] font-bold text-[#101f30] bg-[#00fff7] border border-[#00fff7] py-3 rounded-[10px] tracking-widest transition-all duration-300 shadow-[0_0_12px_rgba(0,255,247,0.2)] hover:bg-transparent hover:text-[#00fff7] hover:shadow-[0_0_20px_#00fff7] uppercase cursor-pointer"
+                    >
+                      SEND MESSAGE
+                    </button>
+                  </div>
+                </form>
               </div>
-            </form>
+            ) : (
+              // PREMIUM CYBERPUNK THANK YOU SCREEN (Walang Transmit New Message Button)
+              <div className="text-center space-y-5 py-6 px-4 mix-blend-screen animate-scaleIn">
+                <div className="w-16 h-16 mx-auto bg-emerald-500/10 border border-emerald-400/30 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+                  <span className="text-emerald-400 text-[26px] animate-bounce">
+                    &#10004;
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="font-['Orbitron'] text-[20px] md:text-[24px] font-bold text-white tracking-widest uppercase">
+                    Handshake{" "}
+                    <span className="text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]">
+                      Linked
+                    </span>
+                  </h3>
+                  <p className="font-['Orbitron'] text-[9px] text-gray-500 tracking-widest">
+                    PROTOCOL_STATUS: SECURE_TRANSMISSION_COMPLETE
+                  </p>
+                </div>
+
+                <p className="font-['Orbitron'] text-[11px] md:text-[12px] text-gray-400 max-w-[340px] mx-auto leading-relaxed text-center tracking-wide">
+                  Thank you for your interest! Your data payload has bypassed
+                  internal firewalls and successfully routed directly to my
+                  workspace mainframe.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

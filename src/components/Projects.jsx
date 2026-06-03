@@ -33,7 +33,8 @@ function Projects() {
       githubLink: "#",
     },
     {
-      title: "Cashier Hub & Employee Payroll System (in School Management System)",
+      title:
+        "Cashier Hub & Employee Payroll System (in School Management System)",
       description:
         "I developed the comprehensive Cashier and Payroll Management module for a web-based business application, enabling efficient tracking of personnel credentials, work attendance, and real-time compensation processing. The module features an interactive dashboard with automatic net pay calculation, automated deduction and overtime tracking, and a seamless digital report generation and individual payslip system.",
       tags: ["REACT", "TAILWIND CSS", "PHP", "MYSQL"],
@@ -53,6 +54,16 @@ function Projects() {
       liveLink:
         "https://drive.google.com/file/d/1ShhcWowi893eExLTnqAxFcar4NymTL6S/view?usp=drive_link",
       githubLink: "#",
+    },
+    {
+      title: "Easy Printing",
+      description:
+        "I created this system to streamline the tedious manual prep-work in busy commercial printing shops by eliminating the need to download files and use heavy photo-editing software. Its primary purpose is to let operators instantly layout and resize multiple images directly inside a web app for immediate, high-quality printing.",
+      tags: ["HTML", "CSS", "JAVASCRIPT"],
+      category: "Web Apps",
+      image: "/images/easyprinting.png",
+      liveLink: "https://jh-easy-printing.vercel.app/",
+      githubLink: "https://github.com/JmsHrvyyy/easy-printing.git",
     },
     {
       title: "AC Tutorial Services",

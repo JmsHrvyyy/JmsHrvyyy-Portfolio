@@ -20,6 +20,7 @@ function About() {
     { name: "React", src: "react.png" },
     { name: "Firebase", src: "firebase.png" },
     { name: "Tailwind CSS", src: "tailwindcss.png" },
+    { name: "Expo", src: "expo.png" },
   ];
 
   // Scroll Reveal Observer

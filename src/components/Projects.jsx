@@ -23,6 +23,16 @@ function Projects() {
       githubLink: "https://github.com/JmsHrvyyy/VibeMovies.git",
     },
     {
+      title: "Job Hunting Manager",
+      description:
+        "A production-ready, full-stack mobile application built with React Native and Expo, integrated with Firebase Authentication and Firestore DB. It features secure session persistence (AsyncStorage) and real-time data handling. Designed with a mobile-first approach and a dark-themed UI to streamline job application tracking and modern career management.",
+      tags: ["REACT NATIVE", "EXPO (EAS)", "FIREBASE", "JAVASCRIPT"],
+      category: "Mobile / Desktop Apps",
+      image: "/images/jobhuntingmanager.jpg",
+      liveLink: "https://drive.google.com/file/d/1IQCD-NQZLIfEoX6_hiXs800-QptiO218/view?usp=drive_link",
+      githubLink: "https://github.com/JmsHrvyyy/job-hunting-manager.git",
+    },
+    {
       title: "Store Price Searcher",
       description:
         "The app features real-time product syncing, product management, search and sorting, and a built-in calculator mode for faster customer transactions.",
